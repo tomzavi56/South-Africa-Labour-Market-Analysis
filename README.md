@@ -240,7 +240,7 @@ The forecasting section uses a relatively short quarterly series and a limited s
 
 ## Data source
 
-**Statistics South Africa (Stats SA) — Quarterly Labour Force Survey (QLFS)**
+**Statistics South Africa (Stats SA)  Quarterly Labour Force Survey (QLFS)**
 
 The analysis, code and interpretation in this repository were produced as part of this project using Stats SA data.
 
