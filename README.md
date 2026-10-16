@@ -135,6 +135,8 @@ Several ARIMA specifications and ETS models were evaluated using the final eight
 
 The ETS level-only model marginally outperformed ARIMA(0,1,1) on the holdout sample. Its eight-quarter forecast suggests unemployment remaining broadly stable at around **33%**, rather than showing a strong upward or downward movement.
 
+![South African unemployment rate forecast](visuals/unemployment_forecast.png)
+
 ## Repository Structure
 
 ```text
