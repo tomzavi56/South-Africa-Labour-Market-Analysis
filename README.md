@@ -1,80 +1,101 @@
 # South African Labour Market Analysis
 
-## Overview
+## About the project
 
-This project analyses South Africa's labour market with a focus on unemployment. It combines national quarterly unemployment trends from 2008 to 2026 Q2 with Statistics South Africa (Stats SA) Quarterly Labour Force Survey (QLFS) microdata for 2026 Q2.
+I built this project to explore unemployment in South Africa using official Statistics South Africa (Stats SA) labour-market data.
 
-The project covers data cleaning, exploratory data analysis, provincial and demographic comparisons, hypothesis testing, logistic regression, and time-series forecasting.
+The project combines two types of QLFS data:
 
-## Research Questions
+- national quarterly unemployment trends from **2008 Q1 to 2026 Q2**
+- QLFS microdata for **2026 Q2**
+
+I used the data to look at how unemployment has changed over time, how it differs across provinces and demographic groups, which factors are associated with unemployment, and what recent patterns suggest about the next few quarters.
+
+The project includes data cleaning, exploratory analysis, hypothesis testing, logistic regression and time-series forecasting.
+
+## Questions I wanted to answer
 
 1. How has South Africa's unemployment rate changed over time?
 2. Which provinces have the highest and lowest unemployment rates?
 3. How does unemployment differ by gender, age and education?
-4. How severe is youth labour-market exclusion?
-5. Are employment status and demographic/geographic characteristics statistically associated?
-6. Which factors are associated with the probability of unemployment?
+4. How serious is youth labour-market exclusion?
+5. Are employment status and demographic or geographic characteristics statistically related?
+6. Which factors are associated with unemployment?
 7. Is the national unemployment series stationary?
-8. Which forecasting approach performs better between selected ARIMA and ETS models?
+8. Which performs better for this data: ARIMA or ETS?
 9. What does the selected model suggest about unemployment over the next several quarters?
 
 ## Data
 
-The project uses official Statistics South Africa (Stats SA) Quarterly Labour Force Survey data.
+The data comes from the **Statistics South Africa Quarterly Labour Force Survey (QLFS)**.
 
-Two main sources are used:
+I used:
 
-- **QLFS Trends 2008–2026 Q2** for the national quarterly unemployment time series.
-- **QLFS 2026 Q2 unit-record data** for provincial and demographic analysis.
+- **QLFS Trends 2008–2026 Q2** for the national quarterly unemployment series
+- **QLFS 2026 Q2 unit-record data** for the provincial and demographic analysis
 
-The cleaned national time-series dataset is stored in:
+The cleaned national time-series dataset used in the project is stored here:
 
 `data/south_africa_unemployment_2008_2026.csv`
 
-Survey weights are used for the provincial and demographic unemployment-rate estimates.
+For the provincial and demographic estimates, I used the QLFS survey weights.
 
-## Key Findings
+## Main findings
 
-### National unemployment trend
+### Unemployment has risen over the long run
 
-The national series contains **74 quarterly observations** from 2008 Q1 to 2026 Q2. The average unemployment rate is approximately **27.94%**, with a low of **21.5% in 2008 Q4** and a high of **35.3% in 2021 Q4**.
+The national series contains **74 quarterly observations** from 2008 Q1 to 2026 Q2.
+
+Across the full period, the average unemployment rate was about **27.94%**. The lowest rate in the data was **21.5% in 2008 Q4**, while the highest was **35.3% in 2021 Q4**.
 
 ![South African unemployment rate and long-term trend](visuals/unemployment_long_term_trend.png)
 
-The long-run pattern shows a substantial rise in unemployment, particularly from the late 2010s into the early 2020s. The largest quarter-to-quarter movements occurred around the COVID-19 period and should be interpreted cautiously.
+The graph shows a clear long-term rise in unemployment, especially from the late 2010s into the early 2020s.
 
-### Provincial differences — Q2 2026
+There are also unusually large movements around the COVID-19 period, so those quarters need to be interpreted carefully.
 
-Weighted unemployment estimates vary substantially across provinces. Eastern Cape records the highest estimated rate at approximately **47.5%**, while Western Cape records the lowest at approximately **19.5%**.
+### Provincial differences are large
+
+The Q2 2026 weighted estimates show major differences between provinces.
+
+The **Eastern Cape** had the highest estimated unemployment rate at about **47.5%**, while the **Western Cape** had the lowest at about **19.5%**.
 
 ![Unemployment rate by province](visuals/unemployment_by_province.png)
 
-### Gender differences — Q2 2026
+### Women had a higher unemployment rate than men
 
-Weighted unemployment is higher among women than men:
+For Q2 2026, the weighted unemployment rate was approximately:
 
-- **Female:** approximately **37.4%**
-- **Male:** approximately **30.3%**
+- **37.4% for women**
+- **30.3% for men**
 
 ![Unemployment rate by gender](visuals/unemployment_by_gender.png)
 
-### Age differences — Q2 2026
+### Younger people face the highest unemployment rates
 
-Unemployment is most severe among younger people and generally declines with age. Approximate rates include **77% for ages 15–19**, **61% for ages 20–24**, and **45% for ages 25–29**.
+Unemployment is much higher among younger age groups and generally falls as age increases.
 
-The weighted **NEET rate for youth aged 15–34 is 45.38%**.
+Some of the approximate Q2 2026 rates were:
+
+- **77%** for ages 15–19
+- **61%** for ages 20–24
+- **45%** for ages 25–29
+
+The weighted **NEET rate for people aged 15–34 was 45.38%**.
 
 ![Unemployment rate by age group](visuals/unemployment_by_age.png)
 
-### Education
+### Education is also linked to unemployment outcomes
 
-People with tertiary education have the lowest unemployment rate among the education groups analysed. The results show a clear association between education level and labour-market outcomes, although the analysis does not establish causality.
+People with tertiary education had the lowest unemployment rate among the education groups in this analysis.
 
 ![Unemployment rate by education level](visuals/unemployment_by_education.png)
 
-## Hypothesis Testing
+This shows an association between education and labour-market outcomes, but it should not be interpreted as proof that education alone causes the difference.
 
-Two chi-square tests of independence were conducted using raw sample counts.
+## Hypothesis testing
+
+I used chi-square tests to check whether employment status was associated with gender and province in the sample.
 
 ### Gender and employment status
 
@@ -82,7 +103,7 @@ Two chi-square tests of independence were conducted using raw sample counts.
 - Degrees of freedom: **1**
 - p-value: **< 0.001**
 
-The null hypothesis of independence is rejected, indicating a statistically significant association between gender and employment status in the sample.
+The result suggests a statistically significant association between gender and employment status in the sample.
 
 ### Province and employment status
 
@@ -90,34 +111,42 @@ The null hypothesis of independence is rejected, indicating a statistically sign
 - Degrees of freedom: **8**
 - p-value: **< 0.001**
 
-The null hypothesis is rejected, indicating a statistically significant association between province and employment status in the sample.
+The result also suggests a statistically significant association between province and employment status.
 
-## Logistic Regression
+## Logistic regression
 
-A logistic regression model was fitted with unemployment status as the binary outcome and gender, age, education and province as predictors.
+I fitted a logistic regression model with unemployment status as the outcome variable and gender, age, education and province as predictors.
 
-Selected results:
+Some of the main results were:
 
-- **Male odds ratio: 0.650** — lower estimated odds of unemployment than females, holding other variables constant.
-- **Age odds ratio: 0.936** — each additional year of age is associated with lower estimated odds of unemployment.
+- **Male odds ratio: 0.650** — males had lower estimated odds of unemployment than females, holding the other variables constant.
+- **Age odds ratio: 0.936** — each additional year of age was associated with lower estimated odds of unemployment.
 - **Tertiary education odds ratio: 0.349** relative to the reference education category.
 - **Western Cape odds ratio: 0.302** relative to Eastern Cape.
 
-The overall model is statistically significant.
+The model was statistically significant overall.
 
-## Time-Series Forecasting
+These results show associations rather than causal effects.
 
-The Augmented Dickey-Fuller test indicates that the unemployment series is non-stationary in levels:
+## Time-series forecasting
+
+Before fitting the forecasting models, I tested the national unemployment series for stationarity using the Augmented Dickey-Fuller test.
+
+For the original series:
 
 - ADF statistic: **-0.9637**
 - p-value: **0.7663**
 
-After first differencing, the series becomes stationary:
+The series was therefore treated as non-stationary.
+
+After first differencing:
 
 - ADF statistic: **-8.1253**
 - p-value: **< 0.001**
 
-Several ARIMA specifications and ETS models were evaluated using the final eight quarters as a test set.
+The differenced series was stationary.
+
+I then compared several ARIMA and ETS models using the final eight quarters as a test set.
 
 ### Best ARIMA model
 
@@ -133,11 +162,13 @@ Several ARIMA specifications and ETS models were evaluated using the final eight
 - MAE: **0.800**
 - RMSE: **0.968**
 
-The ETS level-only model marginally outperformed ARIMA(0,1,1) on the holdout sample. Its eight-quarter forecast suggests unemployment remaining broadly stable at around **33%**, rather than showing a strong upward or downward movement.
+The ETS level-only model performed slightly better than ARIMA(0,1,1) on the holdout period.
+
+Its eight-quarter forecast suggests that unemployment may remain broadly around **33%**, rather than showing a strong upward or downward trend.
 
 ![South African unemployment rate forecast](visuals/unemployment_forecast.png)
 
-## Repository Structure
+## Project structure
 
 ```text
 South-Africa-Labour-Market-Analysis/
@@ -166,48 +197,56 @@ South-Africa-Labour-Market-Analysis/
     └── unemployment_forecast.png
 ```
 
-## Notebook Guide
+## Notebooks
 
-| Notebook | Purpose |
+| Notebook | What it covers |
 |---|---|
-| [01 — Data Loading and Exploration](notebooks/01_data_loading_and_exploration.ipynb) | Loading and initially exploring the labour-market data |
+| [01 — Data Loading and Exploration](notebooks/01_data_loading_and_exploration.ipynb) | Loading the data and checking its structure |
 | [02 — Data Cleaning and Validation](notebooks/02_data_cleaning_and_validation.ipynb) | Cleaning and validating the national unemployment series |
 | [03 — Exploratory Data Analysis](notebooks/03_exploratory_data_analysis.ipynb) | Descriptive statistics, trends and visualisations |
 | [04 — Provincial and Demographic Analysis](notebooks/04_provincial_and_demographic_analysis.ipynb) | Province, gender, age, education and youth analysis |
-| [05 — Hypothesis Testing](notebooks/05_hypothesis_testing.ipynb) | Chi-square tests of labour-market differences |
+| [05 — Hypothesis Testing](notebooks/05_hypothesis_testing.ipynb) | Chi-square tests for labour-market differences |
 | [06 — Regression Analysis](notebooks/06_regression_analysis.ipynb) | Logistic regression of unemployment status |
 | [07 — Time-Series Forecasting](notebooks/07_time_series_forecasting.ipynb) | Stationarity testing, ARIMA, ETS and forecasting |
 
-## Tools and Methods
+## Tools and methods
 
-Python, Google Colab, Pandas, NumPy, Matplotlib, SciPy, Statsmodels and Scikit-learn were used for:
+I used:
 
-- Exploratory data analysis and descriptive statistics
+- Python
+- Google Colab
+- Pandas
+- NumPy
+- Matplotlib
+- SciPy
+- Statsmodels
+- Scikit-learn
+- Exploratory data analysis
 - Weighted survey estimates
-- Chi-square hypothesis tests
+- Chi-square tests
 - Logistic regression
-- Augmented Dickey-Fuller stationarity testing
-- ARIMA forecasting
+- Augmented Dickey-Fuller testing
+- ARIMA
 - Exponential Smoothing / ETS
-- MAE and RMSE forecast evaluation
+- MAE and RMSE for forecast evaluation
 
 ## Limitations
 
-The QLFS is based on a complex survey design. Survey weights were used when calculating provincial and demographic unemployment-rate estimates.
+The QLFS uses a complex survey design. I used survey weights for the provincial and demographic unemployment estimates, but the chi-square tests were based on raw sample counts.
 
-The chi-square tests use raw sample counts and should therefore be interpreted as simplified inferential analyses rather than fully survey-design-adjusted tests. The logistic regression is also exploratory and does not fully account for the QLFS complex survey design.
+The logistic regression is also exploratory and does not fully adjust for the QLFS survey design.
 
-The forecasting exercise is based on a relatively short quarterly series and evaluates a limited set of ARIMA and ETS specifications. Forecasts should therefore be interpreted as statistical projections rather than certain future outcomes.
+The forecasting section uses a relatively short quarterly series and a limited set of ARIMA and ETS specifications. The forecasts should therefore be treated as model-based projections rather than certain future outcomes.
 
-## Data Source
+## Data source
 
-Statistics South Africa (Stats SA), **Quarterly Labour Force Survey (QLFS)**.
+**Statistics South Africa (Stats SA) — Quarterly Labour Force Survey (QLFS)**
 
-The analysis and interpretation in this repository are independently produced from Stats SA data.
+The analysis, code and interpretation in this repository were produced as part of this project using Stats SA data.
 
-## Project Status
+## Status
 
-✅ Core statistical analysis completed.
+✅ Core analysis completed.
 
 ## Author
 
