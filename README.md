@@ -8,8 +8,6 @@ The project covers data cleaning, exploratory data analysis, provincial and demo
 
 ## Research Questions
 
-The analysis addresses the following questions:
-
 1. How has South Africa's unemployment rate changed over time?
 2. Which provinces have the highest and lowest unemployment rates?
 3. How does unemployment differ by gender, age and education?
@@ -29,9 +27,9 @@ Two main sources are used:
 - **QLFS Trends 2008–2026 Q2** for the national quarterly unemployment time series.
 - **QLFS 2026 Q2 unit-record data** for provincial and demographic analysis.
 
-The cleaned national time-series dataset used in the repository is:
+The cleaned national time-series dataset is stored in:
 
-- `south_africa_unemployment_2008_2026.csv`
+`data/south_africa_unemployment_2008_2026.csv`
 
 Survey weights are used for the provincial and demographic unemployment-rate estimates.
 
@@ -39,55 +37,44 @@ Survey weights are used for the provincial and demographic unemployment-rate est
 
 ### National unemployment trend
 
-- The national quarterly unemployment series contains **74 observations** from 2008 Q1 to 2026 Q2.
-- The average unemployment rate over the period is approximately **27.94%**.
-- The lowest observed rate is **21.5% in 2008 Q4**.
-- The highest observed rate is **35.3% in 2021 Q4**.
-- The long-run pattern shows a substantial increase in unemployment, particularly from the late 2010s into the early 2020s.
-- The largest quarter-to-quarter movements occurred around the COVID-19 period, which should be interpreted cautiously because labour-force participation and unemployment measurement were unusually affected.
+The national series contains **74 quarterly observations** from 2008 Q1 to 2026 Q2. The average unemployment rate is approximately **27.94%**, with a low of **21.5% in 2008 Q4** and a high of **35.3% in 2021 Q4**.
+
+![South African unemployment rate and long-term trend](visuals/unemployment_long_term_trend.png)
+
+The long-run pattern shows a substantial rise in unemployment, particularly from the late 2010s into the early 2020s. The largest quarter-to-quarter movements occurred around the COVID-19 period and should be interpreted cautiously.
 
 ### Provincial differences — Q2 2026
 
-Weighted unemployment estimates show substantial variation across provinces.
+Weighted unemployment estimates vary substantially across provinces. Eastern Cape records the highest estimated rate at approximately **47.5%**, while Western Cape records the lowest at approximately **19.5%**.
 
-- **Eastern Cape:** approximately **47.5%**
-- **North West:** approximately **38.1%**
-- **Free State:** approximately **37.3%**
-- **Mpumalanga:** approximately **36.6%**
-- **Gauteng:** approximately **34.6%**
-- **KwaZulu-Natal:** approximately **32.5%**
-- **Limpopo:** approximately **32.0%**
-- **Northern Cape:** approximately **28.7%**
-- **Western Cape:** approximately **19.5%**
-
-Eastern Cape records the highest estimated unemployment rate, while Western Cape records the lowest.
+![Unemployment rate by province](visuals/unemployment_by_province.png)
 
 ### Gender differences — Q2 2026
 
-Weighted unemployment is higher among women than men.
+Weighted unemployment is higher among women than men:
 
 - **Female:** approximately **37.4%**
 - **Male:** approximately **30.3%**
 
+![Unemployment rate by gender](visuals/unemployment_by_gender.png)
+
 ### Age differences — Q2 2026
 
-Unemployment is most severe among younger people and generally declines with age.
-
-Approximate rates include:
-
-- Ages 15–19: **77%**
-- Ages 20–24: **61%**
-- Ages 25–29: **45%**
+Unemployment is most severe among younger people and generally declines with age. Approximate rates include **77% for ages 15–19**, **61% for ages 20–24**, and **45% for ages 25–29**.
 
 The weighted **NEET rate for youth aged 15–34 is 45.38%**.
 
+![Unemployment rate by age group](visuals/unemployment_by_age.png)
+
 ### Education
 
-People with tertiary education have the lowest unemployment rate among the education groups analysed. The descriptive results indicate a strong association between educational attainment and labour-market outcomes, although the analysis does not establish causality.
+People with tertiary education have the lowest unemployment rate among the education groups analysed. The results show a clear association between education level and labour-market outcomes, although the analysis does not establish causality.
+
+![Unemployment rate by education level](visuals/unemployment_by_education.png)
 
 ## Hypothesis Testing
 
-Two chi-square tests of independence were carried out using sample counts.
+Two chi-square tests of independence were conducted using raw sample counts.
 
 ### Gender and employment status
 
@@ -109,9 +96,9 @@ The null hypothesis is rejected, indicating a statistically significant associat
 
 A logistic regression model was fitted with unemployment status as the binary outcome and gender, age, education and province as predictors.
 
-Selected results from the model include:
+Selected results:
 
-- **Male odds ratio: 0.650** — males have lower estimated odds of unemployment than females, holding the other variables constant.
+- **Male odds ratio: 0.650** — lower estimated odds of unemployment than females, holding other variables constant.
 - **Age odds ratio: 0.936** — each additional year of age is associated with lower estimated odds of unemployment.
 - **Tertiary education odds ratio: 0.349** relative to the reference education category.
 - **Western Cape odds ratio: 0.302** relative to Eastern Cape.
@@ -150,33 +137,54 @@ The ETS level-only model marginally outperformed ARIMA(0,1,1) on the holdout sam
 
 ## Repository Structure
 
-| File | Purpose |
+```text
+South-Africa-Labour-Market-Analysis/
+│
+├── README.md
+├── .gitignore
+│
+├── data/
+│   └── south_africa_unemployment_2008_2026.csv
+│
+├── notebooks/
+│   ├── 01_data_loading_and_exploration.ipynb
+│   ├── 02_data_cleaning_and_validation.ipynb
+│   ├── 03_exploratory_data_analysis.ipynb
+│   ├── 04_provincial_and_demographic_analysis.ipynb
+│   ├── 05_hypothesis_testing.ipynb
+│   ├── 06_regression_analysis.ipynb
+│   └── 07_time_series_forecasting.ipynb
+│
+└── visuals/
+    ├── unemployment_long_term_trend.png
+    ├── unemployment_by_province.png
+    ├── unemployment_by_gender.png
+    ├── unemployment_by_age.png
+    ├── unemployment_by_education.png
+    └── unemployment_forecast.png
+```
+
+## Notebook Guide
+
+| Notebook | Purpose |
 |---|---|
-| `01_data_loading_and_exploration.ipynb` | Initial data loading and exploration |
-| `02_data_cleaning_and_validation.ipynb` | Cleaning and validating the national unemployment series |
-| `03_exploratory_data_analysis.ipynb` | Descriptive statistics, trends and visualisations |
-| `04_provincial_and_demographic_analysis.ipynb` | Province, gender, age, education and youth analysis |
-| `05_hypothesis_testing.ipynb` | Chi-square tests of labour-market differences |
-| `06_regression_analysis.ipynb` | Logistic regression of unemployment status |
-| `07_time_series_forecasting.ipynb` | Stationarity testing, ARIMA, ETS and forecasting |
-| `south_africa_unemployment_2008_2026.csv` | Cleaned national quarterly unemployment dataset |
+| [01 — Data Loading and Exploration](notebooks/01_data_loading_and_exploration.ipynb) | Loading and initially exploring the labour-market data |
+| [02 — Data Cleaning and Validation](notebooks/02_data_cleaning_and_validation.ipynb) | Cleaning and validating the national unemployment series |
+| [03 — Exploratory Data Analysis](notebooks/03_exploratory_data_analysis.ipynb) | Descriptive statistics, trends and visualisations |
+| [04 — Provincial and Demographic Analysis](notebooks/04_provincial_and_demographic_analysis.ipynb) | Province, gender, age, education and youth analysis |
+| [05 — Hypothesis Testing](notebooks/05_hypothesis_testing.ipynb) | Chi-square tests of labour-market differences |
+| [06 — Regression Analysis](notebooks/06_regression_analysis.ipynb) | Logistic regression of unemployment status |
+| [07 — Time-Series Forecasting](notebooks/07_time_series_forecasting.ipynb) | Stationarity testing, ARIMA, ETS and forecasting |
 
 ## Tools and Methods
 
-- Python
-- Google Colab
-- Pandas
-- NumPy
-- Matplotlib
-- SciPy
-- Statsmodels
-- Scikit-learn
-- Exploratory Data Analysis
-- Descriptive Statistics
+Python, Google Colab, Pandas, NumPy, Matplotlib, SciPy, Statsmodels and Scikit-learn were used for:
+
+- Exploratory data analysis and descriptive statistics
 - Weighted survey estimates
-- Chi-square tests
+- Chi-square hypothesis tests
 - Logistic regression
-- Augmented Dickey-Fuller testing
+- Augmented Dickey-Fuller stationarity testing
 - ARIMA forecasting
 - Exponential Smoothing / ETS
 - MAE and RMSE forecast evaluation
@@ -198,8 +206,6 @@ The analysis and interpretation in this repository are independently produced fr
 ## Project Status
 
 ✅ Core statistical analysis completed.
-
-The repository is now being refined for portfolio presentation and documentation.
 
 ## Author
 
